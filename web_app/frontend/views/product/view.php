@@ -29,11 +29,45 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
-            'product_name',
-            'product_description',
-            'price',
-            'current_amount',
+            [
+                'attribute'=>'id',
+                'label'=>'รหัสสินค้า',
+                'format'=>'raw',
+                'value'=>function($model){
+                    return $model->id;
+                }
+            ],
+            
+            [
+                'attribute'=>'product_name',
+                'label'=>'ชื่อสินค้า',
+                'format'=>'raw',
+                'value'=>function($model){
+                    return $model->product_name;
+                }
+            ],
+
+            [
+                'attribute'=>'product_description',
+                'label'=>'รายละเอียด',
+            ],
+
+            [
+                'attribute'=>'price',
+                'label'=>'ราคา',
+                'value'=>function($model){
+                    return $model->price." บาท";
+                }
+            ],
+
+            [
+                'attribute'=>'current_amount',
+                'label'=>'จำนวน',
+                'value'=>function($model){
+                    return $model->current_amount." ชิ้น";
+                }
+            ],
+
             [
                 'attribute'=>'img',
                 'format'=>'html',
