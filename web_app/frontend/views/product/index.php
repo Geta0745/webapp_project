@@ -29,6 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             [
                 'attribute'=>'id',
+                'label'=>'รหัสสินค้า',
                 'format'=>'raw',
                 'value'=>function($model){
                     return $model->id;
@@ -37,17 +38,33 @@ $this->params['breadcrumbs'][] = $this->title;
             
             [
                 'attribute'=>'product_name',
+                'label'=>'ชื่อสินค้า',
                 'format'=>'raw',
                 'value'=>function($model){
                     return $model->product_name;
                 }
             ],
 
-            'product_description',
+            [
+                'attribute'=>'product_description',
+                'label'=>'รายละเอียด',
+            ],
 
-            'price',
+            [
+                'attribute'=>'price',
+                'label'=>'ราคา',
+                'value'=>function($model){
+                    return $model->price." บาท";
+                }
+            ],
 
-            'current_amount',
+            [
+                'attribute'=>'current_amount',
+                'label'=>'จำนวน',
+                'value'=>function($model){
+                    return $model->current_amount." ชิ้น";
+                }
+            ],
 
             [
                 'attribute'=>'img',

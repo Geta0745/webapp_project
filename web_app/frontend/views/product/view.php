@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var app\models\Product $model */
 
-$this->title = $model->id;
+$this->title = $model->product_name;
 $this->params['breadcrumbs'][] = ['label' => 'Products', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -34,7 +34,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'product_description',
             'price',
             'current_amount',
-            'img',
+            [
+                'attribute'=>'img',
+                'format'=>'html',
+                'value'=>function($model){
+                    return Html::img($model->img,['width' => '100px']);
+                }
+            ],
         ],
     ]) ?>
 

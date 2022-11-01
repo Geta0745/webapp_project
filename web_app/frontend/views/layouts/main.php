@@ -36,11 +36,9 @@ AppAsset::register($this);
     ]);
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
-    }else if(Yii::$app->user->can('employee')){
+    }else if(Yii::$app->user->can('employee') || Yii::$app->user->can('Admin')){
         $menuItems = [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
+            ['label' => 'Home', 'url' => ['/product/index']],
         ];
     }else{
         $menuItems = [

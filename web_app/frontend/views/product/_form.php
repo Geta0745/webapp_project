@@ -16,11 +16,15 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'product_description')->textInput(['maxlength' => true])->label('รายละเอียด') ?>
 
-    <?= $form->field($model, 'price')->textInput()->label('ราคา') ?>
+    <?= $form->field($model, 'price')->textInput(['type'=>'number'])->label('ราคา') ?>
 
-    <?= $form->field($model, 'current_amount')->textInput()->label('จำนวน') ?>
+    <?= $form->field($model, 'current_amount')->textInput(['type'=>'number'])->label('จำนวน') ?>
     <br>
-    <?= $form->field($model, 'img')->fileInput()->label(false) ?>
+    <?php echo $form->field($model, 'file')->fileInput(['class'=>'form-control','disabled'=>$model->img != null])->label(false); 
+    if($model->img != null){
+        echo '<br><p>You already have Image</p>';
+    }
+    ?>
     <br>
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

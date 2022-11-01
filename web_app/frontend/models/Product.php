@@ -4,7 +4,8 @@ namespace app\models;
 
 use Yii;
 use \yii\web\UploadedFile;
-
+use yii\helpers\FileHelper;
+use yii\helpers\Url;
 /**
  * This is the model class for table "product".
  *
@@ -17,7 +18,7 @@ use \yii\web\UploadedFile;
  */
 class Product extends \yii\db\ActiveRecord
 {
-    public $upload_foler ='images';
+    public $file;
     /**
      * {@inheritdoc}
      */
@@ -32,10 +33,10 @@ class Product extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['product_name', 'product_description', 'price', 'current_amount', 'img'], 'required'],
+            [['product_name', 'product_description', 'price', 'current_amount'], 'required'],
             [['price', 'current_amount'], 'integer'],
             [['product_name', 'product_description'], 'string', 'max' => 100],
-            [['img'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg'],
+            [['file'], 'file', 'skipOnEmpty' => $this->img != null, 'extensions' => 'png, jpg'],
         ];
     }
 
@@ -54,33 +55,20 @@ class Product extends \yii\db\ActiveRecord
         ];
     }
 
-    public function upload($model, $attribute)
+    public function uploadPath() {
+        return Url::to('@web/uploads/events');
+    }
+
+    public function uploadFile($path,$extension)
     {
-        $photo = UploadedFile::getInstance($model, $attribute);
-        $path = $this->getUploadPath();
-        if ($photo !== null) {
-            $fileName = md5($photo->baseName . time()) . '.' . $photo->extension;
-            //$fileName = $photo->baseName . '.' . $photo->extension;
-            if ($photo->saveAs($path . $fileName)) {
-                $model->img = $this->getUploadPath().$fileName;
-                return true;
-            }
+        if ($this->validate()) {
+            FileHelper::createDirectory($path);
+            $this->file->saveAs($path.$extension,false);
+            return true;
+        } else {
+            return false;
         }
-        return $model->isNewRecord ? false : $model->getOldAttribute($attribute);
     }
 
-    public function getUploadPath()
-    {
-        return Yii::getAlias('@webroot') . '/' . $this->upload_foler . '/';
-    }
 
-    public function getUploadUrl()
-    {
-        return Yii::getAlias('@web') . '/' . $this->upload_foler . '/';
-    }
-
-    public function getPhotoViewer()
-    {
-        return empty($this->photo) ? Yii::getAlias('@web') . '/img/none.png' : $this->getUploadUrl() . $this->photo;
-    }
 }
