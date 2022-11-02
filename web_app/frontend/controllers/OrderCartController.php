@@ -8,6 +8,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Product;
+use Yii;
 /**
  * OrderCartController implements the CRUD actions for OrderCart model.
  */
@@ -47,6 +48,19 @@ class OrderCartController extends Controller
         ]);
     }
 
+    public function actionBill(){
+        return $this->render('bill');
+    }
+
+    public function actionCashBill(){
+        $cart = OrderCart::find()->where(['user_id'=>Yii::$app->user->identity->id])->all();
+        foreach($cart as $row){
+            $row->delete();
+        }
+        Yii::$app->session->setFlash('success', 'ขอบคุณที่ใช้บริการ ครับ/ค่ะ');
+        return $this->redirect(['site/index']);
+    }
+
     /**
      * Displays a single OrderCart model.
      * @param int $id ID
@@ -71,7 +85,10 @@ class OrderCartController extends Controller
         $product = Product::find()->where(['id'=>$id])->one();
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                $product->current_amount -= $model->amount;
+                if($product->save()){
+                    return $this->redirect(['index']);
+                }
             }
         } else {
             $model->loadDefaultValues();
@@ -89,18 +106,18 @@ class OrderCartController extends Controller
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    /*public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $product = Product::find()->where(['id'=>$model->product_id])->one();
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
-            'model' => $model,
+            'model' => $model,'id'=>$model->product_id,'product'=>$product,
         ]);
-    }
+    }*/
 
     /**
      * Deletes an existing OrderCart model.
@@ -111,8 +128,11 @@ class OrderCartController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
+        $model = $this->findModel($id);
+        $product = Product::find()->where(['id'=>$model->product_id])->one();
+        $product->current_amount += $model->amount;
+        $product->save();
+        $model->delete();
         return $this->redirect(['index']);
     }
 

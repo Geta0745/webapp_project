@@ -39,12 +39,13 @@ AppAsset::register($this);
     }else if(Yii::$app->user->can('employee') || Yii::$app->user->can('Admin')){
         $menuItems = [
             ['label' => 'Home', 'url' => ['/product/index']],
+            ['label' => 'Rates', 'url' => ['/product/rates']],
         ];
     }else{
         $menuItems = [
             ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
+            ['label' => 'Cart', 'url' => ['/order-cart/index']],
+            ['label' => 'Rate Us', 'url' => ['/site/rate']],
         ];
     }
 

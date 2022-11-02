@@ -15,7 +15,7 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
-
+use frontend\models\Contact;
 /**
  * Site controller
  */
@@ -123,17 +123,17 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionContact()
+    public function actionRate()
     {
-        $model = new ContactForm();
+        if(Contact::find()->where(['name'=>Yii::$app->user->identity->username])->exists()){
+            Yii::$app->session->setFlash('success', 'คุณได้ทำแบบสอบถามไปแล้ว');
+            return $this->redirect(['index']);
+        }
+        $model = new Contact();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
-                Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
-            } else {
-                Yii::$app->session->setFlash('error', 'There was an error sending your message.');
-            }
-
-            return $this->refresh();
+            $model->save();
+            Yii::$app->session->setFlash('success', 'ขอบคุณสำหรับแบบประเมิน ครับ/ค่ะ');
+            return $this->redirect(['index']);
         }
 
         return $this->render('contact', [

@@ -7,35 +7,33 @@
 use yii\bootstrap5\Html;
 use yii\bootstrap5\ActiveForm;
 use yii\captcha\Captcha;
-
-$this->title = 'Contact';
+$model->name = Yii::$app->user->identity->username;
+$model->email = Yii::$app->user->identity->email;
+$model->description = "...";
+$this->title = 'Rate Us';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-contact">
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        If you have business inquiries or other questions, please fill out the following form to contact us. Thank you.
+        ประเมินให้คะแนนความพึงพอใจของคุณกับเรา :)
     </p>
 
     <div class="row">
         <div class="col-lg-5">
             <?php $form = ActiveForm::begin(['id' => 'contact-form']); ?>
 
-                <?= $form->field($model, 'name')->textInput(['autofocus' => true]) ?>
+                <?= $form->field($model, 'name')->textInput(['autofocus' => true,'readonly'=>true]) ?>
 
-                <?= $form->field($model, 'email') ?>
+                <?= $form->field($model, 'email')->textInput(['readonly'=>true]) ?>
 
-                <?= $form->field($model, 'subject') ?>
+                <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
-                <?= $form->field($model, 'body')->textarea(['rows' => 6]) ?>
-
-                <?= $form->field($model, 'verifyCode')->widget(Captcha::class, [
-                    'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
-                ]) ?>
+                <?= Html::activeDropDownList($model, 'rate',[''=>'--คะแนนความพึงพอใจ--',1=>'น้อยที่สุด',2=>'น้อย',3=>'ปานกลาง',4=>'มาก',5=>'มากที่สุด'],['class'=>'form-control']) ?><br>
 
                 <div class="form-group">
-                    <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>
+                    <?= Html::submitButton('ส่งประเมิน', ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>
                 </div>
 
             <?php ActiveForm::end(); ?>

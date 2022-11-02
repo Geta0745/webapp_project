@@ -12,7 +12,8 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="order-cart-create">
 
     <h1><?= Html::encode($product->product_name) ?></h1>
-    <p>ราคา <?php echo $product->price; ?></p>
+    <p>ราคา : <?php echo $product->price; ?></p>
+    <p>จำนวนที่มี : <?php echo $product->current_amount; ?></p>
     <hr>
     <?= $this->render('_form', [
         'model' => $model,'id'=>$id,'product'=>$product,

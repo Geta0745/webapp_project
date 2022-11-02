@@ -16,9 +16,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'product_description')->textInput(['maxlength' => true])->label('รายละเอียด') ?>
 
-    <?= $form->field($model, 'price')->textInput(['type'=>'number'])->label('ราคา') ?>
+    <?= $form->field($model, 'price')->textInput(['type'=>'number','id'=>'price'])->label('ราคา') ?>
 
-    <?= $form->field($model, 'current_amount')->textInput(['type'=>'number'])->label('จำนวน') ?>
+    <?= $form->field($model, 'current_amount')->textInput(['type'=>'number','id'=>'amount'])->label('จำนวน') ?>
     <br>
     <?php echo $form->field($model, 'file')->fileInput(['class'=>'form-control','disabled'=>$model->img != null])->label(false); 
     if($model->img != null){
@@ -33,3 +33,23 @@ use yii\widgets\ActiveForm;
     <?php ActiveForm::end(); ?>
 
 </div>
+
+
+<?php
+$script = <<< JS
+$('#amount').on('change',function(){
+    if($('#amount').val() < 0){
+        $('#amount').val(0);
+    }
+});
+
+$('#price').on('change',function(){
+    if($('#price').val() < 0){
+        $('#price').val(0);
+    }
+});
+
+JS;
+
+$this->registerJs($script);
+?>
