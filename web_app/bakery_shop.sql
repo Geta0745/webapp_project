@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 30, 2022 at 03:49 PM
+-- Generation Time: Nov 08, 2022 at 10:24 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 7.4.30
 
@@ -38,8 +38,8 @@ CREATE TABLE `auth_assignment` (
 --
 
 INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`) VALUES
-('Admin', '3', 1667118090),
-('employee', '5', 1667118090),
+('Admin', '2', 1667118090),
+('employee', '3', 1667118090),
 ('user', '1', 1667118090);
 
 -- --------------------------------------------------------
@@ -101,6 +101,27 @@ CREATE TABLE `auth_rule` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `contact`
+--
+
+CREATE TABLE `contact` (
+  `id` int(5) NOT NULL,
+  `name` varchar(150) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `description` varchar(200) NOT NULL,
+  `rate` int(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `contact`
+--
+
+INSERT INTO `contact` (`id`, `name`, `email`, `description`, `rate`) VALUES
+(1, 'usertest1', 'usertest@gmail.com', '...', 1);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `migration`
 --
 
@@ -125,14 +146,15 @@ INSERT INTO `migration` (`version`, `apply_time`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `order`
+-- Table structure for table `order_cart`
 --
 
-CREATE TABLE `order` (
+CREATE TABLE `order_cart` (
   `id` int(5) NOT NULL,
-  `order_date` date NOT NULL,
+  `product_id` int(5) NOT NULL,
   `user_id` int(5) NOT NULL,
-  `amount` int(5) NOT NULL
+  `amount` int(10) NOT NULL,
+  `order_date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -155,7 +177,14 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `product_name`, `product_description`, `price`, `current_amount`, `img`) VALUES
-(1, 'Bread', 'just a normal Bread', 100, 1, 'http://localhost/project/webapp_project/web_app/frontend/web/images/bread.jpg');
+(1, 'ครัวซอง', 'ครัวซอง แสนอร่อยสดใหม่จากเตา', 20, 18, '//localhost/project/webapp_project/web_app/frontend/web/images//ครัวซอง_WedNov2022.jpg'),
+(2, 'ช็อคโกแลตพาย', 'ช็อคโกแลตพาย หอมหวานอร่อยสดใหม่จากเตา', 30, 20, '//localhost/project/webapp_project/web_app/frontend/web/images//ช็อคพาย_WedNov2022.jpg'),
+(3, 'เค้กแยมสตรอเบอรี่', 'เค้กแยมสตรเบอรี่ แสนอร่อย', 35, 20, '//localhost/project/webapp_project/web_app/frontend/web/images//เค้กแยม_WedNov2022.jpg'),
+(4, 'ช็อคโกแลตบราวนี่', 'ช็อคโกแลตบราวนี่ แสนอร่อย', 30, 18, '//localhost/project/webapp_project/web_app/frontend/web/images//โกโก้บราวนี่_WedNov2022.jpg'),
+(5, 'รัมเค้กรสช็อคโกแลต', 'รัมเค้กรสช็อคโกแลต แสนอร่อย', 40, 9, '//localhost/project/webapp_project/web_app/frontend/web/images//ช้อครัมเค้ก_WedNov2022.jpg'),
+(6, 'เค้กช็อคโกแลตใส้สตรอเบอรี่', 'เค้กช็อคโกแลตใส้สตรอเบอรี่ แสนอร่อย', 35, 20, '//localhost/project/webapp_project/web_app/frontend/web/images//เค้กช้อคสตรอเบอรี่_WedNov2022.jpg'),
+(7, 'คุ้กกี้อบ', 'ใหม่สินค้าทดลอง คุ้กกี้อบหวาน หอม อร่อย กลมกล่อม ลองเลย', 0, 25, '//localhost/project/webapp_project/web_app/frontend/web/images//คุ้กกี้_WedNov2022.jpg'),
+(8, 'พายสัปรส', 'พายสัปรส แสนอร่อย', 100, 15, '//localhost/project/webapp_project/web_app/frontend/web/images//พายสัปรส_WedNov2022.jpg');
 
 -- --------------------------------------------------------
 
@@ -181,10 +210,9 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `username`, `auth_key`, `password_hash`, `password_reset_token`, `email`, `status`, `created_at`, `updated_at`, `verification_token`) VALUES
-(1, 'qq', '3oSTob4j2or9RqtcZLbPcWeZyIpljy65', '$2y$13$x.vXssJZmhOjlFAPEaerf.YAgFGGd0tD6z5PquWvTMaH275Y6B2Ha', NULL, 'q@gmail.com', 10, 1667128412, 1667128412, 'tsgZZSt2uLmwMWI-cVELhrvGuuDXaPjK_1667128412'),
-(3, 'qqq', 'D42UrEKMBBblODtVPfw0U5QZaXd0FEc6', '$2y$13$fOzjW04gqvYQMIN5.zoB..EzYtxsZ/HCsN2BAdHXD1Wec79PRoTSq', NULL, 'qq@gmail.com', 9, 1667128741, 1667128741, NULL),
-(4, 'aa', 'AmFb0gtmYhzWk4TpAFsyXS4_WI8dSUXI', '$2y$13$nUYbgn6OViSifNdgTbEYnOgVI/16T5GYJMXBswObkAWhpc4GFF0HO', 'p0R3667HFQ3IhajjPepVhX0dRUv0r3B6_1667129013', 'a@gmail.com', 10, 1667128889, 1667129013, 'loBkusPsC8a82AS3AjK9VuTtMt7c_Gjl_1667128889'),
-(5, 'geta', 'LhlK_uyiSL9pWJ187tQ0-5iHHi2UyaBz', '$2y$13$QZJ8ETatvCjy6jRVNMY9YO5f.G8VoE6IJ7jSdln/cjzPrduRzASge', NULL, 'geta@gmail.com', 10, 1667129310, 1667129310, 'wNXz7wlBoGrPPzW6ZdCNRiM04YOotC08_1667129310');
+(1, 'usertest1', '163uJvQd1E03qsu0cwwdxegSAQ25Ywyz', '$2y$13$WxlwSbRs2xuRfFmt99DJjuNU8jg6KV.OSruvTSoHO9RLWfdqG.9TG', NULL, 'usertest@gmail.com', 10, 1667405406, 1667405406, 'VYmed0ol-ClI26ROpgymt_OaSTg9lMyt_1667405406'),
+(2, 'admin', '593p3AiMV65pOd4pkIOtBuyhqz7csz0P', '$2y$13$p4YSOa41oJ8O1oSWzGOYCOJRopFzy.P5c4kJ38cN0t2iQbWln56DK', NULL, 'admin@gmail.com', 10, 1667405430, 1667405430, 'gWJGNsVwdO4EtQ_DyJ6hNpRtyO4ycLTq_1667405430'),
+(3, 'userem', '1j4shuq3sTbft_FZk2M9uf9jd-W68pCr', '$2y$13$XeLIO/JZEg5u2IcrvlDiwOl9v0vQK1YRhfACRW9n4sBh9GiElgRES', NULL, 'userem@gmail.com', 10, 1667405459, 1667405459, 'wYoq41kci4BRN6p--jI9xzwd4_dVG-E2_1667405459');
 
 --
 -- Indexes for dumped tables
@@ -219,15 +247,21 @@ ALTER TABLE `auth_rule`
   ADD PRIMARY KEY (`name`);
 
 --
+-- Indexes for table `contact`
+--
+ALTER TABLE `contact`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `migration`
 --
 ALTER TABLE `migration`
   ADD PRIMARY KEY (`version`);
 
 --
--- Indexes for table `order`
+-- Indexes for table `order_cart`
 --
-ALTER TABLE `order`
+ALTER TABLE `order_cart`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -250,22 +284,28 @@ ALTER TABLE `user`
 --
 
 --
--- AUTO_INCREMENT for table `order`
+-- AUTO_INCREMENT for table `contact`
 --
-ALTER TABLE `order`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `contact`
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `order_cart`
+--
+ALTER TABLE `order_cart`
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
